@@ -5,6 +5,6 @@ namespace SKS_Yonetim_Backend.Interfaces.IManagers
 {
     public interface IAuthManager
     {
-        DtoKullaniciModel GetDtoKullaniciModel(LoginViewModel loginViewModel);
+        DtoKullaniciModel? GetDtoKullaniciModel(LoginViewModel loginViewModel);
     }
 }

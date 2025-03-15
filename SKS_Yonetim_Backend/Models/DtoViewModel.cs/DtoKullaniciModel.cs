@@ -7,6 +7,10 @@ namespace SKS_Yonetim_Backend.Models
                     public required string Soyad;
                     public required string Email;
                     public required int Rol;
+                    public int BolumId;
+                    public string? OgrenciNo;
+                    public string? UnvanId;
+
 
           }
 }
