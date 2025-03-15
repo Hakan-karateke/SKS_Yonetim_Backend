@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace SKS_Yonetim_Backend.Models.Context
 {
           public class Kullanici
           {
+                    [Key]
                     public int Id { get; set; }
                     public required string KullaniciAdi { get; set; }
                     public required string Sifre { get; set; }

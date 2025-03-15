@@ -5,21 +5,41 @@ namespace SKS_Yonetim_Backend.Data
 {
           public class SKSDbContext(DbContextOptions<SKSDbContext> options) : DbContext(options)
           {
-                    public DbSet<Kullanici> Kullanicis { get; set; }
-                    public DbSet<Unvan> Unvans { get; set; }
-                    public DbSet<Fakulte> Fakultes { get; set; }
-                    public DbSet<Bolum> Bolums { get; set; }
-                    public DbSet<Ogretmen> Ogretmens { get; set; }
-                    public DbSet<Ogrenci> Ogrencis { get; set; }
-                    public DbSet<HataLog> HataLogs { get; set; }
-                    public DbSet<Personel> Personels { get; set; }
-                    public DbSet<Randevu> Randevus { get; set; }
-                    public DbSet<MailTemplate> MailTemplates { get; set; }
-                    public DbSet<Randevum> Randevums { get; set; }
-                    public DbSet<RandevuYeri> RandevuYeris { get; set; }
-                    public DbSet<RandevuAlinanSaat> RandevuAlinanSaats { get; set; }
-                    public DbSet<RandevuAlinmayacakSaat> RandevuAlinmayacakSaats { get; set; }
-                    public DbSet<RandevuTur> RandevuTurs { get; set; }
-                    public DbSet<RandevuYetkilendirme> RandevuYetkilendirmes { get; set; }
+                    //Veri tabanı bağlantı ayarları
+                    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+                    {
+                              optionsBuilder.EnableSensitiveDataLogging();
+                              if (!optionsBuilder.IsConfigured)
+                              {
+                                        if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX))
+                                        {
+                                                  optionsBuilder.UseSqlServer("server=localhost; database=SKSRandevuDB; User Id=SA; password=reallyStrongPwd123; TrustServerCertificate=True;");
+                                        }
+                                        else
+                                        {
+                                                  optionsBuilder.UseSqlServer("Server=.;Database=SKSRandevuDB;Trusted_Connection=SSPI;TrustServerCertificate=true;");
+                                        }
+                              }
+                    }
+
+                    public DbSet<Bolum> Bolum { get; set; }
+                    public DbSet<Dil> Dil { get; set; }
+                    public DbSet<Fakulte> Fakulte { get; set; }
+                    public DbSet<HataLog> HataLog { get; set; }
+                    public DbSet<Iletisim> Iletisim { get; set; }
+                    public DbSet<Kullanici> Kullanici { get; set; }
+                    public DbSet<MailTemplate> MailTemplate { get; set; }
+                    public DbSet<Ogrenci> Ogrenci { get; set; }
+                    public DbSet<Ogretmen> Ogretmen { get; set; }
+                    public DbSet<Personel> Personel { get; set; }
+                    public DbSet<Randevu> Randevu { get; set; }
+                    public DbSet<RandevuAlinanSaat> RandevuAlinanSaat { get; set; }
+                    public DbSet<RandevuAlinmayacakSaat> RandevuAlinmayacakSaat { get; set; }
+                    public DbSet<RandevuGrup> RandevuGrup { get; set; }
+                    public DbSet<Randevum> Randevum { get; set; }
+                    public DbSet<RandevuTur> RandevuTur { get; set; }
+                    public DbSet<RandevuYeri> RandevuYeri { get; set; }
+                    public DbSet<RandevuYetkilendirme> RandevuYetkilendirme { get; set; }
+                    public DbSet<Unvan> Unvan { get; set; }
           }
 }

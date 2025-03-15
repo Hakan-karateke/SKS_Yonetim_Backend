@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace SKS_Yonetim_Backend.Models.Context
 {
           public class RandevuYeri
           {
+                    [Key]
                     public int Id { get; set; }
                     public required string RandevuYeriAdi { get; set; }
                     public required string RandevuYeriAdres { get; set; }

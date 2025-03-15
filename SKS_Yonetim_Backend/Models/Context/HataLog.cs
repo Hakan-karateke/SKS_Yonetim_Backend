@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace SKS_Yonetim_Backend.Models.Context
 {
-        public class HataLog
+    public class HataLog
     {
+        [Key]
         public int ID { get; set; }
         public string? MachineName { get; set; }
         public DateTime Logged { get; set; }

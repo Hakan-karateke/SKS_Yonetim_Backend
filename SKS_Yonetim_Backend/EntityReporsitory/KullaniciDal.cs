@@ -16,7 +16,7 @@ namespace SKS_Yonetim_Backend.EntityReporsitory
                     {
                               try
                               {
-                                        var result = _context.Kullanicis.Where(x => x.Email == email).FirstOrDefault()!;
+                                        var result = _context.Kullanici.Where(x => x.Email == email).FirstOrDefault()!;
                                         return result;
                               }
                               catch (Exception ex)
@@ -29,7 +29,7 @@ namespace SKS_Yonetim_Backend.EntityReporsitory
                     {
                               try
                               {
-                                        var result = _context.Kullanicis.Where(x => x.Email == email && x.Sifre == sifre).FirstOrDefault()!;
+                                        var result = _context.Kullanici.Where(x => x.Email == email && x.Sifre == sifre && x.Onay == IslemTip.Onaylandi.GetHashCode()).FirstOrDefault()!;
                                         return result;
                               }
                               catch (Exception ex)
@@ -42,7 +42,7 @@ namespace SKS_Yonetim_Backend.EntityReporsitory
                     {
                               try
                               {
-                                        _context.Kullanicis.Add(entity);
+                                        _context.Kullanici.Add(entity);
                                         int affectedRows = _context.SaveChanges(); // Etkilenen satır sayısını al
                                         return affectedRows > 0; // Satır sayısı 0'dan büyükse işlem başarılıdır
                               }
@@ -57,7 +57,7 @@ namespace SKS_Yonetim_Backend.EntityReporsitory
                     {
                               try
                               {
-                                        _context.Kullanicis.Remove(entity);
+                                        _context.Kullanici.Remove(entity);
                                         int affectedRows = _context.SaveChanges(); // Etkilenen satır sayısını al
                                         return affectedRows > 0; // Satır sayısı 0'dan büyükse işlem başarılıdır
                               }
@@ -71,7 +71,7 @@ namespace SKS_Yonetim_Backend.EntityReporsitory
                     {
                               try
                               {
-                                        var result = _context.Kullanicis.ToList();
+                                        var result = _context.Kullanici.ToList();
                                         return result;
                               }
                               catch (Exception ex)
@@ -84,7 +84,7 @@ namespace SKS_Yonetim_Backend.EntityReporsitory
                     {
                               try
                               {
-                                        var result = _context.Kullanicis.Find(id)!;
+                                        var result = _context.Kullanici.Find(id)!;
                                         return result;
                               }
                               catch (Exception ex)
@@ -97,7 +97,7 @@ namespace SKS_Yonetim_Backend.EntityReporsitory
                     {
                               try
                               {
-                                        _context.Kullanicis.Update(entity);
+                                        _context.Kullanici.Update(entity);
                                         int affectedRows = _context.SaveChanges(); // Etkilenen satır sayısını al
                                         return affectedRows > 0; // Satır sayısı 0'dan büyükse işlem başarılıdır
                               }

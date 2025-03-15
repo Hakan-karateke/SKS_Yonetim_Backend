@@ -1,3 +1,4 @@
+using SKS_Yonetim_Backend.Helpers;
 using SKS_Yonetim_Backend.Data;
 using SKS_Yonetim_Backend.Interfaces.IEntityRepositories;
 using SKS_Yonetim_Backend.Interfaces.IManagers;
@@ -21,7 +22,7 @@ namespace SKS_Yonetim_Backend.Managers
                     }
                     public DtoKullaniciModel? GetDtoKullaniciModel(LoginViewModel loginViewModel)
                     {
-                              var kullanici = _kullaniciDal.GetKullaniciByEmailandSifre(loginViewModel.Email, loginViewModel.Sifre);
+                              var kullanici = _kullaniciDal.GetKullaniciByEmailandSifre(loginViewModel.Email, GeneralTools.ComputeSha1Password(loginViewModel.Sifre));
                               if (kullanici == null)
                               {
                                         return null;

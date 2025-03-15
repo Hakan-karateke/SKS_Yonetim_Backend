@@ -16,7 +16,7 @@ namespace SKS_Yonetim_Backend.EntityReporsitory
                     {
                               try
                               {
-                                        var result = _context.Ogretmens.Where(x => x.KullaniciId == kullaniciId).FirstOrDefault()!;
+                                        var result = _context.Ogretmen.Where(x => x.KullaniciId == kullaniciId).FirstOrDefault()!;
                                         return result;
                               }
                               catch (Exception ex)
@@ -29,7 +29,7 @@ namespace SKS_Yonetim_Backend.EntityReporsitory
                     {
                               try
                               {
-                                        _context.Ogretmens.Add(entity);
+                                        _context.Ogretmen.Add(entity);
                                         int affectedRows = _context.SaveChanges(); // Etkilenen satır sayısını al
                                         return affectedRows > 0; // Satır sayısı 0'dan büyükse işlem başarılıdır
                               }
@@ -43,7 +43,7 @@ namespace SKS_Yonetim_Backend.EntityReporsitory
                     {
                               try
                               {
-                                        _context.Ogretmens.Remove(entity);
+                                        _context.Ogretmen.Remove(entity);
                                         int affectedRows = _context.SaveChanges(); // Etkilenen satır sayısını al
                                         return affectedRows > 0; // Satır sayısı 0'dan büyükse işlem başarılıdır
                               }
@@ -57,7 +57,7 @@ namespace SKS_Yonetim_Backend.EntityReporsitory
                     {
                               try
                               {
-                                        var result = _context.Ogretmens.Where(x => x.OgretmenNo == numara).FirstOrDefault()!;
+                                        var result = _context.Ogretmen.Where(x => x.OgretmenNo == numara).FirstOrDefault()!;
                                         return result;
                               }
                               catch (Exception ex)
@@ -70,7 +70,7 @@ namespace SKS_Yonetim_Backend.EntityReporsitory
                     {
                               try
                               {
-                                        var result = _context.Ogretmens.Where(x => x.Email == email).FirstOrDefault()!;
+                                        var result = _context.Ogretmen.Where(x => x.Email == email).FirstOrDefault()!;
                                         return result;
                               }
                               catch (Exception ex)
@@ -83,7 +83,7 @@ namespace SKS_Yonetim_Backend.EntityReporsitory
                     {
                               try
                               {
-                                        return _context.Ogretmens.AsEnumerable();
+                                        return _context.Ogretmen.AsEnumerable();
                               }
                               catch (Exception ex)
                               {
@@ -95,7 +95,7 @@ namespace SKS_Yonetim_Backend.EntityReporsitory
                     {
                               try
                               {
-                                        var result = _context.Ogretmens.Where(x => x.Id == id).FirstOrDefault()!;
+                                        var result = _context.Ogretmen.Where(x => x.Id == id).FirstOrDefault()!;
                                         return result;
                               }
                               catch (Exception ex)
@@ -108,7 +108,7 @@ namespace SKS_Yonetim_Backend.EntityReporsitory
                     {
                               try
                               {
-                                        _context.Ogretmens.Update(entity);
+                                        _context.Ogretmen.Update(entity);
                                         int affectedRows = _context.SaveChanges(); // Etkilenen satır sayısını al
                                         return affectedRows > 0; // Satır sayısı 0'dan büyükse işlem başarılıdır
                               }

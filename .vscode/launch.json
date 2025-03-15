@@ -1,0 +1,26 @@
+{
+          "version": "0.2.0",
+          "configurations": [
+            {
+              "name": ".NET Core Launch (web)",
+              "type": "coreclr",
+              "request": "launch",
+              "preLaunchTask": "build",
+              "program": "${workspaceFolder}/SKS_Yonetim_Backend/bin/Debug/net8.0/SKS_Yonetim_Backend.dll",
+              "args": [],
+              "cwd": "${workspaceFolder}/SKS_Yonetim_Backend",
+              "stopAtEntry": false,
+              "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+              },
+              "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "DOTNET_CLI_HOME": "/tmp"
+              },
+              "diagnosticPorts": [],
+              //"sslPort": 5001
+            }
+          ]
+        }
+        

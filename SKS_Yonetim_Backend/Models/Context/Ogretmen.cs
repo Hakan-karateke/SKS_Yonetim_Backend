@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace SKS_Yonetim_Backend.Models.Context
 {
           public class Ogretmen
           {
+                    [Key]
                     public int Id { get; set; }
                     public required string OgretmenNo { get; set; }
                     public required string Ad { get; set; }
@@ -10,7 +13,6 @@ namespace SKS_Yonetim_Backend.Models.Context
                     public required string Telefon { get; set; }
                     public required string Adres { get; set; }
                     public required int BolumId { get; set; }
-                    public required string Sifre { get; set; }
                     public int Onay { get; set; }
                     public int KullaniciId { get; set; }
                     

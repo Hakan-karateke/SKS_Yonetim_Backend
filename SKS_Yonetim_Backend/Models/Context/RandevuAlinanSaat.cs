@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace SKS_Yonetim_Backend.Models.Context
 {
           public class RandevuAlinanSaat
           {
+                    [Key]
                     public int Id { get; set; }
                     public int RandevuId { get; set; }
                     public int BaslangicSaat { get; set; }
