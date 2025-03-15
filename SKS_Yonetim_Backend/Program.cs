@@ -12,9 +12,21 @@ using SKS_Yonetim_Backend.EntityReporsitory;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// CORS yapılandırmasını ekleyelim (Tüm kaynaklara izin ver)
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("MyPolicy",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000")  // Explicitly allow this origin
+                  .AllowAnyHeader()  // Allow any header
+                  .AllowAnyMethod()  // Allow any HTTP method
+                  .AllowCredentials();  // Allow credentials
+        });
+});
+
 // Servisleri DI container'a kaydetme
 builder.Services.AddScoped<IAuthManager, AuthManager>();
-
 builder.Services.AddScoped<IKullaniciDal, KullaniciDal>();
 builder.Services.AddScoped<IOgretmenDal, OgretmenDal>();
 builder.Services.AddScoped<IOgrenciDal, OgrenciDal>();
@@ -29,7 +41,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.RequireHttpsMetadata = false; // Geliştirme ortamında HTTPS zorunlu değil
+        options.RequireHttpsMetadata = false;
         options.SaveToken = true;
         options.TokenValidationParameters = new TokenValidationParameters
         {
@@ -37,15 +49,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = "bingolsks.com",  // AuthController'daki issuer ile aynı olmalı
-            ValidAudience = "bingolsks.com", // AuthController'daki audience ile aynı olmalı
+            ValidIssuer = "bingolsks.com",
+            ValidAudience = "bingolsks.com",
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("nerde_kaldi_bu_bingolun_randevulari"))
         };
     });
 
 builder.Services.AddAuthorization();
 
-// Add DbContext with SQL Server connection based on the OS platform
+// Add DbContext
 builder.Services.AddDbContext<SKSDbContext>((serviceProvider, options) =>
 {
     if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX))
@@ -60,7 +72,9 @@ builder.Services.AddDbContext<SKSDbContext>((serviceProvider, options) =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Middleware sırası önemli! CORS'u erkenden ekleyin.
+app.UseCors("MyPolicy");
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -68,11 +82,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-// Middleware sırası önemli! Authentication önce çağrılmalı.
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

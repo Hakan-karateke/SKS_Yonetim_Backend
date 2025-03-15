@@ -80,7 +80,10 @@ namespace SKS_Yonetim_Backend.Controllers
                                                   new Claim("Id", result.Id.ToString()),
                                                   new Claim("Ad", result.Ad),
                                                   new Claim("Soyad", result.Soyad),
-                                                  new Claim("Email", result.Email)
+                                                  new Claim("Email", result.Email),
+                                                  new Claim("BolumId", result.BolumId.ToString()),
+                                                  new Claim("OgrenciNo", result.OgrenciNo != null ? result.OgrenciNo.ToString() : "Ogrenci No Bulunmadi"),
+                                                  new Claim("UnvanId", result.UnvanId != null ? result.UnvanId.ToString() : "Unvan Bulunmadi")
                                         };
 
                                         var token = new JwtSecurityToken(

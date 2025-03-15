@@ -9,7 +9,6 @@ namespace SKS_Yonetim_Backend.Models.Context
 
                     [Required(ErrorMessage = "Şifre gerekli.")]
                     public required string Sifre { get; set; }
-                    public required int Rol {  get; set; }
 
           }
 }
