@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\SKS_Yonetim_Backend.props" />
+</Project>
