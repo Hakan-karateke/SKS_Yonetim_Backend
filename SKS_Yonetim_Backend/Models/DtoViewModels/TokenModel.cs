@@ -1,6 +1,6 @@
-namespace SKS_Yonetim_Backend.Models
+namespace SKS_Yonetim_Backend.Models.DtoViewModels
 {
-          public class DtoKullaniciModel
+          public class TokenModel
           {
                     public required int Id;
                     public required string Ad;

@@ -2,7 +2,7 @@ using SKS_Yonetim_Backend.Helpers;
 using SKS_Yonetim_Backend.Data;
 using SKS_Yonetim_Backend.Interfaces.IEntityRepositories;
 using SKS_Yonetim_Backend.Interfaces.IManagers;
-using SKS_Yonetim_Backend.Models;
+using SKS_Yonetim_Backend.Models.DtoViewModels;
 using SKS_Yonetim_Backend.Models.Context;
 
 namespace SKS_Yonetim_Backend.Managers
@@ -20,7 +20,7 @@ namespace SKS_Yonetim_Backend.Managers
                               _ogrenciDal = ogrenciDal;
                               _personelDal = personelDal;
                     }
-                    public DtoKullaniciModel? GetDtoKullaniciModel(LoginViewModel loginViewModel)
+                    public TokenModel? GetTokenModel(LoginViewModel loginViewModel)
                     {
                               var kullanici = _kullaniciDal.GetKullaniciByEmailandSifre(loginViewModel.Email, GeneralTools.ComputeSha1Password(loginViewModel.Sifre));
                               if (kullanici == null)
@@ -40,8 +40,8 @@ namespace SKS_Yonetim_Backend.Managers
                               {
                                         return null;
                               }
-                              // result türüne göre DtoKullaniciModel oluşturma
-                              DtoKullaniciModel dtoKullaniciModel = new()
+                              // result türüne göre TokenModel oluşturma
+                              TokenModel TokenModel = new()
                               {
                                         Id = kullanici.Id,
                                         Email = kullanici.Email,
@@ -54,29 +54,29 @@ namespace SKS_Yonetim_Backend.Managers
                               if (result is Ogrenci ogrenci)
                               {
                                         // Ogrenci'ye özgü ek alanlar varsa buraya ekleyebilirsiniz
-                                        dtoKullaniciModel.OgrenciNo = ogrenci.OgrenciNo;
-                                        dtoKullaniciModel.BolumId = ogrenci.BolumId;
-                                        dtoKullaniciModel.UnvanId = null;
+                                        TokenModel.OgrenciNo = ogrenci.OgrenciNo;
+                                        TokenModel.BolumId = ogrenci.BolumId;
+                                        TokenModel.UnvanId = null;
                               }
                               // Eğer result Personel ise
                               else if (result is Personel personel)
                               {
                                         // Personel'e özgü ek alanlar varsa buraya ekleyebilirsiniz
-                                        dtoKullaniciModel.OgrenciNo = null;
-                                        dtoKullaniciModel.BolumId = personel.BolumId;
-                                        dtoKullaniciModel.UnvanId = personel.UnvanId;
+                                        TokenModel.OgrenciNo = null;
+                                        TokenModel.BolumId = personel.BolumId;
+                                        TokenModel.UnvanId = personel.UnvanId;
 
                               }
                               // Eğer result Ogretmen ise
                               else if (result is Ogretmen ogretmen)
                               {
                                         // Ogretmen'e özgü ek alanlar varsa buraya ekleyebilirsiniz
-                                        dtoKullaniciModel.OgrenciNo = null;
-                                        dtoKullaniciModel.BolumId = ogretmen.BolumId;
-                                        dtoKullaniciModel.UnvanId = null;
+                                        TokenModel.OgrenciNo = null;
+                                        TokenModel.BolumId = ogretmen.BolumId;
+                                        TokenModel.UnvanId = null;
                               }
 
-                              return dtoKullaniciModel;
+                              return TokenModel;
                     }
           }
 }

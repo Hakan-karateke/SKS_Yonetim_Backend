@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore.Storage;
 using SKS_Yonetim_Backend.Data;
 using SKS_Yonetim_Backend.Interfaces.IEntityRepositories;
 using SKS_Yonetim_Backend.Models.Context;
@@ -67,6 +68,21 @@ namespace SKS_Yonetim_Backend.EntityReporsitory
                               }
                     }
 
+                    public bool Delete(int id)
+                    {
+                              try
+                              {
+                                        var entity = GetById(id);
+                                        _context.Ogrenci.Remove(entity);
+                                        int affectedRows = _context.SaveChanges(); // Etkilenen satır sayısını al
+                                        return affectedRows > 0; // Satır sayısı 0'dan büyükse işlem başarılıdır
+                              }
+                              catch (Exception ex)
+                              {
+                                        throw new Exception("Entity Katmanında Hata", ex);
+                              }
+                    }
+
                     public IEnumerable<Ogrenci> GetAll()
                     {
                               try
@@ -103,6 +119,11 @@ namespace SKS_Yonetim_Backend.EntityReporsitory
                               {
                                         throw new Exception("Entity Katmanında Hata", ex);
                               }
+                    }
+
+                    public IDbContextTransaction BeginTransaction()
+                    {
+                              return _context.Database.BeginTransaction();
                     }
           }
 }

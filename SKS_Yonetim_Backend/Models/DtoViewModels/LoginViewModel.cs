@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace SKS_Yonetim_Backend.Models.Context
+namespace SKS_Yonetim_Backend.Models.DtoViewModels
 {
           public class LoginViewModel
           {

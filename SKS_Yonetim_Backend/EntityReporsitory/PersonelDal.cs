@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore.Storage;
 using SKS_Yonetim_Backend.Data;
 using SKS_Yonetim_Backend.Interfaces.IEntityRepositories;
 using SKS_Yonetim_Backend.Models.Context;
@@ -53,6 +54,19 @@ namespace SKS_Yonetim_Backend.EntityReporsitory
                               }
                     }
 
+                    public bool Delete(int Id)
+                    {
+                              try
+                              {
+                                        var entity = GetById(Id);
+                                        return Delete(entity);
+                              }
+                              catch (Exception ex)
+                              {
+                                        throw new Exception("Entity Katmanında Hata", ex);
+                              }
+                    }
+
                     public Personel GetById(int id)
                     {
                               try
@@ -93,5 +107,9 @@ namespace SKS_Yonetim_Backend.EntityReporsitory
                               }
                     }
                     
+                    public IDbContextTransaction BeginTransaction()
+                    {
+                              return _context.Database.BeginTransaction();
+                    }
           }
 }

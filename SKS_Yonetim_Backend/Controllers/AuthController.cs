@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SKS_Yonetim_Backend.Interfaces.IManagers;
-using SKS_Yonetim_Backend.Models;
-using SKS_Yonetim_Backend.Models.Context;
+using SKS_Yonetim_Backend.Models.DtoViewModels;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Security.Claims;
@@ -33,7 +32,7 @@ namespace SKS_Yonetim_Backend.Controllers
                     {
                               try
                               {
-                                        var result = _authManager.GetDtoKullaniciModel(loginViewModel);
+                                        var result = _authManager.GetTokenModel(loginViewModel);
                                         if (result != null)
                                         {
                                                   string token = GenerateToken(result);
@@ -66,7 +65,7 @@ namespace SKS_Yonetim_Backend.Controllers
                     /// <param name="result"></param>
                     /// <returns>oluşturulan tokern(string) döndürülür</returns>
                     /// <exception cref="Exception"></exception>
-                    private string GenerateToken(DtoKullaniciModel result)
+                    private string GenerateToken(TokenModel result)
                     {
                               try
                               {

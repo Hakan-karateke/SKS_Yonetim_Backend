@@ -1,5 +1,5 @@
 using SKS_Yonetim_Backend.Models.Context;
-namespace SKS_Yonetim_Backend.Models.DtoViewModel
+namespace SKS_Yonetim_Backend.Models.DtoViewModels
 {
           public class DtoCalender
           {
