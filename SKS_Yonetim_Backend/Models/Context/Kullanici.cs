@@ -18,6 +18,5 @@ namespace SKS_Yonetim_Backend.Models.Context
                     public DateTime? KayitTarihi { get; set; }
                     public DateTime? GuncellemeTarihi { get; set; }
                     public string? OnayToken { get; set; }
-                    public int AkadademikRol { get; set; }
           }
 }

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SKS_Yonetim_Backend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+523cced1c261df137f1e8e34684dd2d0a7e7e675")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c875c1d3727089d9593f112c6c64d17a6180884b")]
 [assembly: System.Reflection.AssemblyProductAttribute("SKS_Yonetim_Backend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SKS_Yonetim_Backend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

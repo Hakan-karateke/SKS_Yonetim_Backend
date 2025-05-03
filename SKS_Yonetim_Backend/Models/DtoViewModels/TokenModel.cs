@@ -7,7 +7,7 @@ namespace SKS_Yonetim_Backend.Models.DtoViewModels
                     public required string Soyad;
                     public required string Email;
                     public required int Rol;
-                    public int BolumId;
+                    public string? BolumId;
                     public string? OgrenciNo;
                     public string? UnvanId;
 

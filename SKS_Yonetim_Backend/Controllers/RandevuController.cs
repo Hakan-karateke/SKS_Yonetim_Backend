@@ -17,7 +17,7 @@ namespace SKS_Yonetim_Backend.Controllers
                     }
 
                     [Authorize]
-                    [HttpGet("CreateRandevuTur")]
+                    [HttpPost("CreateRandevuTur")]
                     public IActionResult CreateRandevuTur(RandevuTur randevuTur)
                     {
                               try

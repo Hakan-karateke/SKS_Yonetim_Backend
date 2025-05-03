@@ -65,7 +65,7 @@ namespace SKS_Yonetim_Backend.Controllers
                     /// <param name="result"></param>
                     /// <returns>oluşturulan tokern(string) döndürülür</returns>
                     /// <exception cref="Exception"></exception>
-                    private string GenerateToken(TokenModel result)
+                    private static string GenerateToken(TokenModel result)
                     {
                               try
                               {
@@ -75,14 +75,14 @@ namespace SKS_Yonetim_Backend.Controllers
 
                                         List<Claim> claims = new List<Claim>
                                         {
-                                                  new Claim("Rol", result.Rol.ToString()),
-                                                  new Claim("Id", result.Id.ToString()),
-                                                  new Claim("Ad", result.Ad),
-                                                  new Claim("Soyad", result.Soyad),
-                                                  new Claim("Email", result.Email),
-                                                  new Claim("BolumId", result.BolumId.ToString()),
-                                                  new Claim("OgrenciNo", result.OgrenciNo != null ? result.OgrenciNo.ToString() : "Ogrenci No Bulunmadi"),
-                                                  new Claim("UnvanId", result.UnvanId != null ? result.UnvanId.ToString() : "Unvan Bulunmadi")
+                                                  new("Rol", result.Rol.ToString()),
+                                                  new("Id", result.Id.ToString()),
+                                                  new("Ad", result.Ad),
+                                                  new("Soyad", result.Soyad),
+                                                  new("Email", result.Email),
+                                                  new("BolumId", result.BolumId != null ? result.BolumId.ToString() : "Bolum Id Bulunmadi"),
+                                                  new("OgrenciNo", result.OgrenciNo != null ? result.OgrenciNo.ToString() : "Ogrenci No Bulunmadi"),
+                                                  new("UnvanId", result.UnvanId != null ? result.UnvanId.ToString() : "Unvan Bulunmadi")
                                         };
 
                                         var token = new JwtSecurityToken(
