@@ -57,11 +57,11 @@ namespace SKS_Yonetim_Backend.Managers
                               }
                     }
 
-                    public IEnumerable<RandevuTur> GetAllRandevuTur()
+                    public List<RandevuTur> GetAllRandevuTur()
                     {
                               try
                               {
-                                        return _randevuTur.GetAll();
+                                        return [.. _randevuTur.GetAll()];
                               }
                               catch (Exception ex)
                               {
@@ -136,11 +136,11 @@ namespace SKS_Yonetim_Backend.Managers
                               }
                     }
 
-                    public IEnumerable<Randevu> GetRandevuByRandevuTurId(int randevuTurId)
+                    public List<Randevu> GetRandevuByRandevuTurId(int randevuTurId)
                     {
                               try
                               {
-                                        return _randevu.GetAll().Where(x => x.RandevuTurId == randevuTurId);
+                                        return [.. _randevu.GetAll().Where(x => x.RandevuTurId == randevuTurId)];
                               }
                               catch (Exception ex)
                               {
@@ -148,11 +148,11 @@ namespace SKS_Yonetim_Backend.Managers
                               }
                     }
 
-                    public IEnumerable<Randevu> GetRandevuByKullaniciId(int kullaniciId)
+                    public List<Randevu> GetRandevuByKullaniciId(int kullaniciId)
                     {
                               try
                               {
-                                        return _randevu.GetAll().Where(x => x.KullaniciId == kullaniciId);
+                                        return [.. _randevu.GetAll().Where(x => x.KullaniciId == kullaniciId)];
                               }
                               catch (Exception ex)
                               {

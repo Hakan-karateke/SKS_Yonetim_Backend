@@ -7,10 +7,10 @@ namespace SKS_Yonetim_Backend.Interfaces.IManagers
           bool CreateRandevuTur(RandevuTur randevuTur);
           bool UpdateRandevuTur(RandevuTur randevuTur);
           bool DeleteRandevuTur(int id);
-          IEnumerable<RandevuTur> GetAllRandevuTur();
+          List<RandevuTur> GetAllRandevuTur();
           RandevuTur GetRandevuTurById(int id);
-          IEnumerable<Randevu> GetRandevuByRandevuTurId(int randevuTurId);
-          IEnumerable<Randevu> GetRandevuByKullaniciId(int kullaniciId);
+          List<Randevu> GetRandevuByRandevuTurId(int randevuTurId);
+          List<Randevu> GetRandevuByKullaniciId(int kullaniciId);
           bool DeleteRandevuById(int id);
           bool UpdateRandevu(Randevu randevu);
           IEnumerable<Randevu> GetAllRandevu();
