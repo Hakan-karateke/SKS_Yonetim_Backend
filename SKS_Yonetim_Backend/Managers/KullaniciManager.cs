@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore.Storage;
 using SKS_Yonetim_Backend.Data;
 using SKS_Yonetim_Backend.Helpers;
 using SKS_Yonetim_Backend.Interfaces.IEntityRepositories;
@@ -10,53 +11,31 @@ namespace SKS_Yonetim_Backend.Managers
     public class KullaniciManager : IKullaniciManager
     {
         private readonly IKullaniciDal _kullaniciDal;
-        private readonly IOgrenciDal _ogrenciDal;
-        private readonly IPersonelDal _personelDal;
-        private readonly IOgretmenDal _ogretmenDal;
+        private readonly IRandevuDal _randevuDal;
+        private readonly IRandevumDal _randevumDal;
+        private readonly IRandevuYetkilendirmeDal _randevuYetkilendirmeDal;
+        private readonly ILogDal _logDal;
+        private IDbContextTransaction? _transaction = null;
 
-        public KullaniciManager(IKullaniciDal kullaniciDal, IOgrenciDal ogrenciDal, IPersonelDal personelDal, IOgretmenDal ogretmenDal)
+        public KullaniciManager(
+            IKullaniciDal kullaniciDal,
+            IRandevuDal randevuDal,
+            IRandevumDal randevumDal,
+            IRandevuYetkilendirmeDal randevuYetkilendirmeDal,
+            ILogDal logDal)
         {
             _kullaniciDal = kullaniciDal;
-            _ogrenciDal = ogrenciDal;
-            _personelDal = personelDal;
-            _ogretmenDal = ogretmenDal;
+            _randevuDal = randevuDal;
+            _randevumDal = randevumDal;
+            _randevuYetkilendirmeDal = randevuYetkilendirmeDal;
+            _logDal = logDal;
         }
-        public DtoProfilModel? GetDtoProfilModelById(int id)
+
+        public Kullanici? GetKullaniciById(int id)
         {
             try
             {
-                Kullanici kullanici = _kullaniciDal.GetById(id);
-                if (kullanici == null)
-                {
-                    return null;
-                }
-                DtoProfilModel dtoProfilModel = new DtoProfilModel(kullanici, (RolTip)kullanici.Rol);
-                // Kullanıcının rolüne göre ilgili entity'yi alıyoruz.
-                object? result = kullanici.Rol switch
-                {
-                    var rol when rol == RolTip.Ogrenci.GetHashCode() => _ogrenciDal.GetById(kullanici.Id),
-                    var rol when rol == RolTip.Personel.GetHashCode() => _personelDal.GetById(kullanici.Id),
-                    var rol when rol == RolTip.Ogretmen.GetHashCode() => _ogretmenDal.GetById(kullanici.Id),
-                    _ => null
-                };
-                if (result is null)
-                {
-                    return null;
-                }
-                // result türüne göre DtoProfilModel oluşturma
-                if (result is Ogrenci ogrenci)
-                {
-                    dtoProfilModel.Ogrenci = ogrenci;
-                }
-                else if (result is Personel personel)
-                {
-                    dtoProfilModel.Personel = personel;
-                }
-                else if (result is Ogretmen ogretmen)
-                {
-                    dtoProfilModel.Ogretmen = ogretmen;
-                }
-                return dtoProfilModel;
+                return _kullaniciDal.GetById(id);
             }
             catch (Exception ex)
             {
@@ -68,7 +47,8 @@ namespace SKS_Yonetim_Backend.Managers
         {
             try
             {
-                Kullanici kullanici = _kullaniciDal.GetById(changePasswordModel.KullaniciId);
+                Kullanici kullanici = _kullaniciDal.GetById(changePasswordModel.KullaniciId)
+                    ?? throw new Exception("Kullanıcı bulunamadı");
                 if (kullanici == null || kullanici.Sifre != GeneralTools.ComputeSha1Password(changePasswordModel.OldPassword!))
                 {
                     return false;
@@ -82,55 +62,140 @@ namespace SKS_Yonetim_Backend.Managers
             }
         }
 
-        public bool UpdateProfil(DtoProfilModel dtoProfilModel)
+        public bool UpdateKullanici(Kullanici kullanici)
         {
             try
             {
-                Kullanici kullanici = dtoProfilModel.Kullanici;
+                return _kullaniciDal.Update(kullanici);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Manager katmaninda hata", ex);
+            }
+        }
+
+        /// <summary>
+        /// Kullanıcıyı ve ilişkili tüm verileri siler.
+        /// İşlemler bir _transaction içinde gerçekleştirilir.
+        /// </summary>
+        /// <param name="id">Silinecek kullanıcının id'si</param>
+        /// <returns>İşlemin başarılı olup olmadığı</returns>
+        public bool DeleteKullanici(int id)
+        {
+            try
+            {
+                // _transaction başlat
+                _transaction = _kullaniciDal.BeginTransaction();
+
+                // Kullanıcı bilgilerini al
+                var kullanici = _kullaniciDal.GetById(id);
                 if (kullanici == null)
                 {
                     return false;
                 }
-                using (var transaction = _kullaniciDal.BeginTransaction())
+
+                // Kullanıcının oluşturduğu randevuları sil
+                if (_randevuDal != null)
                 {
-                    try
+                    var randevular = _randevuDal.GetAll().Where(r => r.KullaniciId == id).ToList();
+                    foreach (var randevu in randevular)
                     {
-                        switch ((RolTip)kullanici.Rol)
+                        // Randevu silme metodunu çağır (bu metot zaten kendi içinde ilişkili verileri siliyor)
+                        if (_randevuDal is IRandevuDal randevuDal)
                         {
-                            case RolTip.Ogrenci:
-                                if (dtoProfilModel.Ogrenci != null)
-                                {
-                                    _ogrenciDal.Update(dtoProfilModel.Ogrenci);
-                                }
-                                break;
-                            case RolTip.Personel:
-                                if (dtoProfilModel.Personel != null)
-                                {
-                                    _personelDal.Update(dtoProfilModel.Personel);
-                                }
-                                break;
-                            case RolTip.Ogretmen:
-                                if (dtoProfilModel.Ogretmen != null)
-                                {
-                                    _ogretmenDal.Update(dtoProfilModel.Ogretmen);
-                                }
-                                break;
-                            default:
-                                throw new Exception("Geçersiz rol tipi.");
+                            var randevuManager = new RandevuManager(randevuDal);
+                            randevuManager.DeleteRandevuById(randevu.Id);
                         }
-                        if (!_kullaniciDal.Update(kullanici))
-                        {
-                            throw new Exception("Kullanıcı güncellenemedi.");
-                        }
-                        transaction.Commit();
-                        return true;
-                    }
-                    catch
-                    {
-                        transaction.Rollback();
-                        throw;
                     }
                 }
+
+                // Kullanıcının aldığı randevuları sil
+                if (_randevumDal != null)
+                {
+                    var randevularim = _randevumDal.GetAll().Where(r => r.KullaniciID == id).ToList();
+                    foreach (var randevum in randevularim)
+                    {
+                        _randevumDal.Delete(randevum);
+                    }
+                }
+
+                // Kullanıcının yetkilendirmelerini sil
+                if (_randevuYetkilendirmeDal != null)
+                {
+                    var yetkilendirmeler = _randevuYetkilendirmeDal.GetAll().Where(y => y.KullaniciId == id).ToList();
+                    foreach (var yetkilendirme in yetkilendirmeler)
+                    {
+                        _randevuYetkilendirmeDal.Delete(yetkilendirme);
+                    }
+                }
+
+                // Kullanıcıya ait hata loglarını sil
+                if (_logDal != null)
+                {
+                    var hataLoglar = _logDal.GetAll().Where(h => h.UserId == id).ToList();
+                    foreach (var hataLog in hataLoglar)
+                    {
+                        _logDal.Delete(hataLog);
+                    }
+                }
+
+                // Son olarak kullanıcıyı sil
+                bool result = _kullaniciDal.Delete(id);
+
+                // İşlem başarılıysa _transaction'ı onayla
+                _transaction.Commit();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                // Hata durumunda _transaction'ı geri al
+                _transaction?.Rollback();
+
+                throw new Exception("Kullanıcı ve ilişkili veriler silinirken hata oluştu", ex);
+            }
+        }
+
+        public bool CreateRandevum(Randevum randevum)
+        {
+            try
+            {
+                return _randevumDal.Add(randevum);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Randevu eklenirken hata oluştu", ex);
+            }
+        }
+
+        public async Task<List<Randevum>> GetKullaniciRandevumList(int kullaniciId, int page)
+        {
+            try
+            {
+                return await _randevumDal.GetRandevularByKullaniciIdAndPageSize(kullaniciId, page);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Kullanıcı randevuları listelenirken hata oluştu", ex);
+            }
+        }
+
+        public bool DeleteRandevum(int id)
+        {
+            try
+            {
+                return _randevumDal.Delete(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Manager katmaninda hata", ex);
+            }
+        }
+        public Randevu? GetKullaniciRandevum(int kullaniciId)
+        {
+            try
+            {
+                return _randevuDal.GetAll().FirstOrDefault(r => r.KullaniciId == kullaniciId);
             }
             catch (Exception ex)
             {

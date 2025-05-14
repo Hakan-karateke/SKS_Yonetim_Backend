@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using SKS_Yonetim_Backend.Data;
 using SKS_Yonetim_Backend.Interfaces.IEntityRepositories;
@@ -5,12 +7,48 @@ using SKS_Yonetim_Backend.Models.Context;
 
 namespace SKS_Yonetim_Backend.EntityReporsitory
 {
-          public class KullaniciDal : IKullaniciDal
+          public class KullaniciDal(SKSDbContext context) : IKullaniciDal
           {
-                    private readonly SKSDbContext _context;
-                    public KullaniciDal(SKSDbContext context)
+                    private readonly SKSDbContext _context = context;
+
+                    public IEnumerable<Kullanici> GetList(Expression<Func<Kullanici, bool>> filter)
                     {
-                              _context = context;
+                              try
+                              {
+                                        var result = _context.Kullanici.Where(filter);
+                                        return result;
+                              }
+                              catch (Exception ex)
+                              {
+                                        throw new Exception("Entity Katmanında Hata", ex);
+                              }
+
+                    }
+
+                    public Kullanici Get(Expression<Func<Kullanici, bool>> filter)
+                    {
+                              try
+                              {
+                                        var result = _context.Kullanici.Where(filter).AsNoTracking().SingleOrDefault();
+                                        return result!;
+                              }
+                              catch (Exception ex)
+                              {
+                                        throw new Exception("Entity Katmanında Hata", ex);
+                              }
+                    }
+
+                    public IQueryable<Kullanici> ListQueryable()
+                    {
+                              try
+                              {
+                                        var result = _context.Kullanici.AsNoTracking();
+                                        return result;
+                              }
+                              catch (Exception ex)
+                              {
+                                        throw new Exception("Entity Katmanında Hata", ex);
+                              }
                     }
 
                     public Kullanici GetKullaniciByEmail(string email)
@@ -31,6 +69,45 @@ namespace SKS_Yonetim_Backend.EntityReporsitory
                               try
                               {
                                         var result = _context.Kullanici.Where(x => x.Email == email && x.Sifre == sifre && x.Onay == IslemTip.Onaylandi.GetHashCode()).FirstOrDefault()!;
+                                        return result;
+                              }
+                              catch (Exception ex)
+                              {
+                                        throw new Exception("Entity Katmanında Hata", ex);
+                              }
+                    }
+
+                    public List<Kullanici> GetKullaniciByRol(int rol)
+                    {
+                              try
+                              {
+                                        var result = _context.Kullanici.Where(x => x.Rol == rol).ToList();
+                                        return result;
+                              }
+                              catch (Exception ex)
+                              {
+                                        throw new Exception("Entity Katmanında Hata", ex);
+                              }
+                    }
+
+                    public List<Kullanici> GetKullaniciByRolAndOnay(int rol, int Onay)
+                    {
+                              try
+                              {
+                                        var result = _context.Kullanici.Where(x => x.Rol == rol && x.Onay == Onay).ToList();
+                                        return result;
+                              }
+                              catch (Exception ex)
+                              {
+                                        throw new Exception("Entity Katmanında Hata", ex);
+                              }
+                    }
+
+                    public List<Kullanici> GetKullaniciByOnay(int Onay)
+                    {
+                              try
+                              {
+                                        var result = _context.Kullanici.Where(x => x.Onay == Onay).ToList();
                                         return result;
                               }
                               catch (Exception ex)
@@ -127,5 +204,7 @@ namespace SKS_Yonetim_Backend.EntityReporsitory
                     {
                               return _context.Database.BeginTransaction();
                     }
+
+
           }
 }

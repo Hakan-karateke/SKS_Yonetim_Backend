@@ -81,43 +81,6 @@ namespace SKS_Yonetim_Backend.Migrations
                     b.ToTable("Fakulte");
                 });
 
-            modelBuilder.Entity("SKS_Yonetim_Backend.Models.Context.HataLog", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<string>("Callsite")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Exception")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Level")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Logged")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Logger")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MachineName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Message")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Properties")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("HataLog");
-                });
-
             modelBuilder.Entity("SKS_Yonetim_Backend.Models.Context.Iletisim", b =>
                 {
                     b.Property<int>("Id")
@@ -210,6 +173,70 @@ namespace SKS_Yonetim_Backend.Migrations
                     b.ToTable("Kullanici");
                 });
 
+            modelBuilder.Entity("SKS_Yonetim_Backend.Models.Context.Log", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("ActionName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Callsite")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("EntityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EntityName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Exception")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IPAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsSuccess")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Level")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LogType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Logged")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Logger")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MachineName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Properties")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RequestInfo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Log");
+                });
+
             modelBuilder.Entity("SKS_Yonetim_Backend.Models.Context.MailTemplate", b =>
                 {
                     b.Property<int>("Id")
@@ -234,156 +261,6 @@ namespace SKS_Yonetim_Backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MailTemplate");
-                });
-
-            modelBuilder.Entity("SKS_Yonetim_Backend.Models.Context.Ogrenci", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Ad")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Adres")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("BolumId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("KullaniciId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("OgrenciNo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Onay")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Sinif")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Soyad")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Telefon")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Ogrenci");
-                });
-
-            modelBuilder.Entity("SKS_Yonetim_Backend.Models.Context.Ogretmen", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Ad")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Adres")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("BolumId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("KullaniciId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("OgretmenNo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Onay")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Soyad")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Telefon")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Ogretmen");
-                });
-
-            modelBuilder.Entity("SKS_Yonetim_Backend.Models.Context.Personel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Ad")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Adres")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("BolumId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FakulteId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("KullaniciId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Onay")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PersonelNo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Soyad")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Telefon")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UnvanId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Personel");
                 });
 
             modelBuilder.Entity("SKS_Yonetim_Backend.Models.Context.Randevu", b =>
@@ -638,18 +515,18 @@ namespace SKS_Yonetim_Backend.Migrations
                     b.Property<bool>("OnaylandiMi")
                         .HasColumnType("bit");
 
+                    b.Property<int>("RandevuID")
+                        .HasColumnType("int");
+
                     b.Property<string>("RandevuNotu")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("RandevuTarihi")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("randevuID")
-                        .HasColumnType("int");
-
                     b.HasKey("ID");
 
-                    b.HasIndex("randevuID");
+                    b.HasIndex("RandevuID");
 
                     b.ToTable("Randevum");
                 });
@@ -675,7 +552,7 @@ namespace SKS_Yonetim_Backend.Migrations
                 {
                     b.HasOne("SKS_Yonetim_Backend.Models.Context.Randevu", "RandevuBilgi")
                         .WithMany()
-                        .HasForeignKey("randevuID")
+                        .HasForeignKey("RandevuID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

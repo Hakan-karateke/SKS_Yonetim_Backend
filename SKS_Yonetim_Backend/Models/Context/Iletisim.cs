@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SKS_Yonetim_Backend.Models.Context
 {
-          public class Iletisim
+          public class Iletisim : Entity
           {
                     [Key]
                     public int Id { get; set; }

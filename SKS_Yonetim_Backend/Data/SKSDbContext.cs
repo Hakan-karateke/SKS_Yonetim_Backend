@@ -25,13 +25,10 @@ namespace SKS_Yonetim_Backend.Data
                     public DbSet<Bolum> Bolum { get; set; }
                     public DbSet<Dil> Dil { get; set; }
                     public DbSet<Fakulte> Fakulte { get; set; }
-                    public DbSet<HataLog> HataLog { get; set; }
+                    public DbSet<Log> Log { get; set; } // Updated to use new Log entity instead of HataLog
                     public DbSet<Iletisim> Iletisim { get; set; }
                     public DbSet<Kullanici> Kullanici { get; set; }
                     public DbSet<MailTemplate> MailTemplate { get; set; }
-                    public DbSet<Ogrenci> Ogrenci { get; set; }
-                    public DbSet<Ogretmen> Ogretmen { get; set; }
-                    public DbSet<Personel> Personel { get; set; }
                     public DbSet<Randevu> Randevu { get; set; }
                     public DbSet<RandevuAlinanSaat> RandevuAlinanSaat { get; set; }
                     public DbSet<RandevuAlinmayacakSaat> RandevuAlinmayacakSaat { get; set; }

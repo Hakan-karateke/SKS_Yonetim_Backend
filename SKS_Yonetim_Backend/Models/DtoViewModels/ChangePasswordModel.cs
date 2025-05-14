@@ -5,6 +5,7 @@ namespace SKS_Yonetim_Backend.Models.DtoViewModels
           public class ChangePasswordModel
           {
                     public int KullaniciId { get; set; }
+                    public string? Email { get; set; }
 
                     [Required]
                     [DataType(DataType.Password)]
@@ -16,10 +17,5 @@ namespace SKS_Yonetim_Backend.Models.DtoViewModels
                     [DataType(DataType.Password)]
                     [Display(Name = "New password")]
                     public string? NewPassword { get; set; }
-
-                    [DataType(DataType.Password)]
-                    [Display(Name = "Confirm new password")]
-                    [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
-                    public string? ConfirmPassword { get; set; }
           }
 }

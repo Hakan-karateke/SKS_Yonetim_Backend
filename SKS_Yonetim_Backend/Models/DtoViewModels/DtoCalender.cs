@@ -7,8 +7,8 @@ namespace SKS_Yonetim_Backend.Models.DtoViewModels
                     public RandevuTur? RandevuTur { get; set; }
                     public List<RandevuYetkilendirme>? RandevuYetkilendirmeler { get; set; }
                     public List<RandevuGrup>? RandevuGruplar { get; set; }
-                    public List<RandevuAlinmayacakSaat>? randevuAlinmayacakSaatler { get; set; }
-                    public List<RandevuAlinanSaat>? randevuAlinanSaatler { get; set; }
-                    public List<RandevuYeri>? randevuYerleri { get; set; }
+                    public List<RandevuAlinmayacakSaat>? RandevuAlinmayacakSaatler { get; set; }
+                    public List<RandevuAlinanSaat>? RandevuAlinanSaatler { get; set; }
+                    public List<RandevuYeri>? RandevuYerleri { get; set; }
           }
 }

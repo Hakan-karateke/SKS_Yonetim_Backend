@@ -2,9 +2,8 @@ namespace SKS_Yonetim_Backend.Data
 {
           public enum RolTip
           {
-                    Ogrenci,
+                    Kullanici,
                     Personel,
-                    Ogretmen,
                     Admin,
           }
           public enum MailTip

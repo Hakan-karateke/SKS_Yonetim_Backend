@@ -2,11 +2,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SKS_Yonetim_Backend.Models.Context
 {
-          public class Randevum
+          public class Randevum : Entity
           {
                     [Key]
                     public int ID { get; set; }
-                    public int randevuID { get; set; }
+                    public int RandevuID { get; set; }
                     public Randevu? RandevuBilgi { get; set; }
                     public int KullaniciID { get; set; }
                     public DateTime AlinmaTarihi { get; set; }

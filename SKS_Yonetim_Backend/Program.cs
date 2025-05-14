@@ -40,11 +40,13 @@ builder.Services.AddScoped<IKullaniciManager, KullaniciManager>();
  * Bu servisler, veri erişim katmanını yönetecek.
  */ 
 builder.Services.AddScoped<IKullaniciDal, KullaniciDal>();
-builder.Services.AddScoped<IOgretmenDal, OgretmenDal>();
-builder.Services.AddScoped<IOgrenciDal, OgrenciDal>();
-builder.Services.AddScoped<IPersonelDal, PersonelDal>();
 builder.Services.AddScoped<IRandevuDal, RandevuDal>();
 builder.Services.AddScoped<IRandevuTurDal, RandevuTurDal>();
+builder.Services.AddScoped<IRandevumDal, RandevumDal>();
+builder.Services.AddScoped<IRandevuAlinanSaatDal, RandevuAlinanSaatDal>();
+builder.Services.AddScoped<IRandevuAlinmayacakSaatDal, RandevuAlinmayacakSaatDal>();
+builder.Services.AddScoped<IRandevuYetkilendirmeDal, RandevuYetkilendirmeDal>();
+builder.Services.AddScoped<ILogDal, LogDal>(); // Replaced HataLogDal with the new comprehensive LogDal
 
 // Add services to the container.
 builder.Services.AddControllers();

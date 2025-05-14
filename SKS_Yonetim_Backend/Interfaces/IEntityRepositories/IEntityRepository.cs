@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace SKS_Yonetim_Backend.Interfaces
@@ -8,8 +9,14 @@ namespace SKS_Yonetim_Backend.Interfaces
         bool Update(T entity);
         bool Delete(T entity);
         bool Delete(int id);
-        T GetById(int id);
+        T? GetById(int id);
         IEnumerable<T> GetAll();
         IDbContextTransaction BeginTransaction();
+
+        IEnumerable<T> GetList(Expression<Func<T, bool>> filter);
+
+        T Get(Expression<Func<T, bool>> filter);
+
+        IQueryable<T> ListQueryable();
     }
 }
