@@ -34,6 +34,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IRandevuManager, RandevuManager>();
 builder.Services.AddScoped<IAuthManager, AuthManager>();
 builder.Services.AddScoped<IKullaniciManager, KullaniciManager>();
+builder.Services.AddScoped<IAdminManager, AdminManager>();
 
 /*
  * Entity Repository Pattern için gerekli olan servisleri ekleyelim.
@@ -42,6 +43,7 @@ builder.Services.AddScoped<IKullaniciManager, KullaniciManager>();
 builder.Services.AddScoped<IKullaniciDal, KullaniciDal>();
 builder.Services.AddScoped<IRandevuDal, RandevuDal>();
 builder.Services.AddScoped<IRandevuTurDal, RandevuTurDal>();
+builder.Services.AddScoped<IRandevuYeriDal, RandevuYeriDal>();
 builder.Services.AddScoped<IRandevumDal, RandevumDal>();
 builder.Services.AddScoped<IRandevuAlinanSaatDal, RandevuAlinanSaatDal>();
 builder.Services.AddScoped<IRandevuAlinmayacakSaatDal, RandevuAlinmayacakSaatDal>();
