@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SKS_Yonetim_Backend.Models.Context
 {
-          public class RandevuAlinmayacakSaat : Entity
+          public class RandevuAlinmayacakSaat 
           {
                     [Key]
                     public int Id { get; set; }

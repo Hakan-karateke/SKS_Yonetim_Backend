@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SKS_Yonetim_Backend.Models.Context
 {
-          public class MailTemplate : Entity
+          public class MailTemplate 
           {
                     [Key]
                     public int Id { get; set; }

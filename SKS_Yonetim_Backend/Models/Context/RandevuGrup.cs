@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SKS_Yonetim_Backend.Models.Context
 {
-          public class RandevuGrup : Entity
+          public class RandevuGrup 
           {
                     [Key]
                     public int Id { get; set; }

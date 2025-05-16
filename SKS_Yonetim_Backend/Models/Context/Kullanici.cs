@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SKS_Yonetim_Backend.Models.Context
 {
-          public class Kullanici : Entity
+          public class Kullanici 
           {
                     [Key]
                     public int Id { get; set; }
