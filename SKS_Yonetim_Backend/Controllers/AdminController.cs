@@ -39,7 +39,8 @@ namespace SKS_Yonetim_Backend.Controllers
             {
                 return BadRequest(new { success = false, message = ex.Message });
             }
-        }        [HttpGet("GetDashboardData")]
+        }
+        [HttpGet("GetDashboardData")]
         public IActionResult GetDashboardData()
         {
             try
@@ -80,7 +81,8 @@ namespace SKS_Yonetim_Backend.Controllers
             catch (Exception ex)
             {
                 return BadRequest(new { success = false, message = ex.Message });
-            }        }
+            }
+        }
 
         [Authorize(Roles = "1")]
         [HttpPost("ChangePassword")]
@@ -96,48 +98,6 @@ namespace SKS_Yonetim_Backend.Controllers
                 else
                 {
                     return BadRequest(new { success = false, message = "Şifre değiştirme işlemi başarısız." });
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { success = false, message = ex.Message });
-            }        }
-
-        [Authorize(Roles = "1")]
-        [HttpPost("CreateRandevuTur")]
-        public IActionResult CreateRandevuTur(RandevuTur randevuTur)
-        {
-            try
-            {
-                var result = _adminManager.CreateRandevuTur(randevuTur);
-                if (result)
-                {
-                    return Ok(new { success = true, message = "Randevu türü başarıyla oluşturuldu." });
-                }
-                else
-                {
-                    return BadRequest(new { success = false, message = "Randevu türü oluşturulamadı." });
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { success = false, message = ex.Message });
-            }        }
-
-        [Authorize(Roles = "1")]
-        [HttpPost("CreateRandevuYeri")]
-        public IActionResult CreateRandevuYeri(RandevuYeri randevuYeri)
-        {
-            try
-            {
-                var result = _adminManager.CreateRandevuYeri(randevuYeri);
-                if (result)
-                {
-                    return Ok(new { success = true, message = "Randevu yeri başarıyla oluşturuldu." });
-                }
-                else
-                {
-                    return BadRequest(new { success = false, message = "Randevu yeri oluşturulamadı." });
                 }
             }
             catch (Exception ex)

@@ -6,37 +6,25 @@ using SKS_Yonetim_Backend.Models.DtoViewModels;
 
 namespace SKS_Yonetim_Backend.Managers
 {
-    public class RandevuManager : IRandevuManager
+    public class RandevuManager(
+        IRandevuDal randevu,
+        IRandevuTurDal? randevuTur = null,
+        IRandevumDal? randevum = null,
+        IRandevuAlinanSaatDal? randevuAlinanSaat = null,
+        IRandevuAlinmayacakSaatDal? randevuAlinmayacakSaat = null,
+        IRandevuYetkilendirmeDal? randevuYetkilendirme = null,
+        IRandevuYeriDal? randevuYeriDal = null,
+        IRandevuGrupDal? randevuGrupDal = null) : IRandevuManager
     {
-        private readonly IRandevuTurDal? _randevuTur;
-        private readonly IRandevuDal _randevu;
-        private readonly IRandevumDal? _randevum;
-        private readonly IRandevuAlinanSaatDal? _randevuAlinanSaat;
-        private readonly IRandevuAlinmayacakSaatDal? _randevuAlinmayacakSaat;
-        private readonly IRandevuYetkilendirmeDal? _randevuYetkilendirme;
-        private readonly IRandevuYeriDal? _randevuYeriDal;
+        private readonly IRandevuTurDal? _randevuTur = randevuTur;
+        private readonly IRandevuDal _randevu = randevu;
+        private readonly IRandevumDal? _randevum = randevum;
+        private readonly IRandevuAlinanSaatDal? _randevuAlinanSaat = randevuAlinanSaat;
+        private readonly IRandevuAlinmayacakSaatDal? _randevuAlinmayacakSaat = randevuAlinmayacakSaat;
+        private readonly IRandevuYetkilendirmeDal? _randevuYetkilendirme = randevuYetkilendirme;
+        private readonly IRandevuYeriDal? _randevuYeriDal = randevuYeriDal;
         private IDbContextTransaction? transaction = null;
-        private readonly IRandevuGrupDal? _randevuGrupDal;
-
-        public RandevuManager(
-            IRandevuDal randevu,
-            IRandevuTurDal? randevuTur = null,
-            IRandevumDal? randevum = null,
-            IRandevuAlinanSaatDal? randevuAlinanSaat = null,
-            IRandevuAlinmayacakSaatDal? randevuAlinmayacakSaat = null,
-            IRandevuYetkilendirmeDal? randevuYetkilendirme = null,
-            IRandevuYeriDal? randevuYeriDal = null,
-            IRandevuGrupDal? randevuGrupDal = null)
-        {
-            _randevuTur = randevuTur;
-            _randevu = randevu;
-            _randevum = randevum;
-            _randevuAlinanSaat = randevuAlinanSaat;
-            _randevuAlinmayacakSaat = randevuAlinmayacakSaat;
-            _randevuYetkilendirme = randevuYetkilendirme;
-            _randevuYeriDal = randevuYeriDal;
-            _randevuGrupDal = randevuGrupDal;
-        }
+        private readonly IRandevuGrupDal? _randevuGrupDal = randevuGrupDal;
 
         public bool CreateRandevuTur(RandevuTur randevuTur)
         {
@@ -452,7 +440,12 @@ namespace SKS_Yonetim_Backend.Managers
                 var relatedRandevular = _randevu.GetList(r => r.RandevuYeriId == id);
                 if (relatedRandevular.Any())
                 {
-                    throw new InvalidOperationException("Bu randevu yerine bağlı randevular bulunmaktadır. Önce bunları silmelisiniz.");
+                    List<Randevu> randevular = relatedRandevular.ToList();
+                    foreach (var randevu in randevular)
+                    {
+                        // Randevuya ait tüm ilişkili verileri sil
+                        DeleteRandevuById(randevu.Id);
+                    }
                 }
 
                 return _randevuYeriDal.Delete(id);
@@ -476,7 +469,7 @@ namespace SKS_Yonetim_Backend.Managers
 
                 // Randevu bilgilerini set et
                 var randevu = dtoCalender.Randevu ?? throw new Exception("Randevu bilgileri boş olamaz.");
-                bool result;
+                bool? result;
                 // Yeni randevu ekleme veya güncelleme
                 if (randevu.Id == 0)
                 {
@@ -487,19 +480,131 @@ namespace SKS_Yonetim_Backend.Managers
                     result = _randevu.Update(randevu);
                 }
 
-                if (!result)
+                // Randevuya ait alinan saatleri ekle
+                if (dtoCalender.RandevuAlinanSaatler != null)
                 {
-                    transaction.Rollback();
-                    return false;
+                    foreach (var saat in dtoCalender.RandevuAlinanSaatler)
+                    {
+                        if (saat.Id == 0)
+                        {
+                            saat.RandevuId = randevu.Id;
+                            result = _randevuAlinanSaat?.Add(saat);
+                        }
+                        else
+                        {
+                            // Güncelleme işlemi
+                            var existingSaat = _randevuAlinanSaat?.GetById(saat.Id);
+                            if (existingSaat != null)
+                            {
+                                existingSaat.RandevuId = randevu.Id;
+                                result = _randevuAlinanSaat?.Update(existingSaat);
+                            }
+                        }
+                    }
                 }
+                // Randevuya ait alınmayacak saatleri ekle
+                if (dtoCalender.RandevuAlinmayacakSaatler != null && dtoCalender.RandevuAlinmayacakSaatler.Count > 0)
+                {
+                    foreach (var saat in dtoCalender.RandevuAlinmayacakSaatler)
+                    {
+                        if (saat.Id == 0)
+                        {
+                            saat.RandevuId = randevu.Id;
+                            result = _randevuAlinmayacakSaat?.Add(saat);
+                        }
+                        else
+                        {
+                            // Güncelleme işlemi
+                            var existingSaat = _randevuAlinmayacakSaat?.GetById(saat.Id);
+                            if (existingSaat != null)
+                            {
+                                existingSaat.RandevuId = randevu.Id;
+                                result = _randevuAlinmayacakSaat?.Update(existingSaat);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    // Randevuya ait alınmayacak saatleri sil
+                    var alinmayacakSaatler = _randevuAlinmayacakSaat?.GetAll().Where(s => s.RandevuId == randevu.Id).ToList();
+                    if (alinmayacakSaatler != null)
+                    {
+                        foreach (var saat in alinmayacakSaatler)
+                        {
+                            result = _randevuAlinmayacakSaat?.Delete(saat);
+                        }
+                    }
+                }
+                // Randevuya ait grupları ekle
+                if (dtoCalender.RandevuGruplar != null && dtoCalender.RandevuGruplar.Count > 0)
+                {
+                    foreach (var grup in dtoCalender.RandevuGruplar)
+                    {
+                        if (grup.Id == 0)
+                        {
+                            grup.RandevuId = randevu.Id;
+                            result = _randevuGrupDal?.Add(grup);
+                        }
+                        else
+                        {
+                            // Güncelleme işlemi
+                            var existingGrup = _randevuGrupDal?.GetById(grup.Id);
+                            if (existingGrup != null)
+                            {
+                                existingGrup.RandevuId = randevu.Id;
+                                result = _randevuGrupDal?.Update(existingGrup);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    // Randevuya ait grupları sil
+                    var gruplar = _randevuGrupDal?.GetAll().Where(g => g.RandevuId == randevu.Id).ToList();
+                    if (gruplar != null)
+                    {
+                        foreach (var grup in gruplar)
+                        {
+                            result = _randevuGrupDal?.Delete(grup);
+                        }
+                    }
+                }
+                // tüm işlemler başarılıysa transaction'ı onayla
+                if (result == null || !result.Value == false)
+                {
+                    transaction.Commit();
+                    return true;
+                }
+                transaction.Rollback();
+                return false;
 
-                transaction.Commit();
-                return true;
             }
             catch (Exception ex)
             {
                 transaction?.Rollback();
                 throw new Exception("Randevu oluşturulurken veya güncellenirken hata oluştu", ex);
+            }
+        }
+
+        public DtoCalender GetDtoCalenderByRandevuId(int randevuId)
+        {
+            try
+            {
+                var randevu = _randevu.GetById(randevuId) ?? throw new Exception("Randevu bulunamadı.");
+                var dtoCalender = new DtoCalender
+                {
+                    Randevu = randevu,
+                    RandevuAlinanSaatler = _randevuAlinanSaat?.GetList(s => s.RandevuId == randevuId).ToList() ?? [],
+                    RandevuAlinmayacakSaatler = _randevuAlinmayacakSaat?.GetList(s => s.RandevuId == randevuId).ToList() ?? [],
+                    RandevuGruplar = _randevuGrupDal?.GetList(g => g.RandevuId == randevuId).ToList() ?? []
+                };
+
+                return dtoCalender;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Randevu bilgileri getirilirken hata oluştu", ex);
             }
         }
     }

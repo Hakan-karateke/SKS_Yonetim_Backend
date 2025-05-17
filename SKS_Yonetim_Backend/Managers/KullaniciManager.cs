@@ -119,16 +119,6 @@ namespace SKS_Yonetim_Backend.Managers
                     }
                 }
 
-                // Kullanıcının yetkilendirmelerini sil
-                if (_randevuYetkilendirmeDal != null)
-                {
-                    var yetkilendirmeler = _randevuYetkilendirmeDal.GetAll().Where(y => y.KullaniciId == id).ToList();
-                    foreach (var yetkilendirme in yetkilendirmeler)
-                    {
-                        _randevuYetkilendirmeDal.Delete(yetkilendirme);
-                    }
-                }
-
                 // Kullanıcıya ait hata loglarını sil
                 if (_logDal != null)
                 {

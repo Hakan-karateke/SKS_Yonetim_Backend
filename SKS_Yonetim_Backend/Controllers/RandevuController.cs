@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SKS_Yonetim_Backend.Interfaces.IManagers;
 using SKS_Yonetim_Backend.Models.Context;
+using SKS_Yonetim_Backend.Models.DtoViewModels;
 
 namespace SKS_Yonetim_Backend.Controllers
 {
@@ -23,6 +24,21 @@ namespace SKS_Yonetim_Backend.Controllers
                               try
                               {
                                         var result = _randevuManager.CreateRandevuTur(randevuTur);
+                                        return Ok(result);
+                              }
+                              catch (Exception ex)
+                              {
+                                        return BadRequest(ex.Message);
+                              }
+                    }
+
+                    [Authorize]
+                    [HttpGet("GetDtoCalenderByRandevuId/{randevuId}")]
+                    public IActionResult GetDtoCalenderByRandevuId(int randevuId)
+                    {
+                              try
+                              {
+                                        var result = _randevuManager.GetDtoCalenderByRandevuId(randevuId);
                                         return Ok(result);
                               }
                               catch (Exception ex)
@@ -158,6 +174,95 @@ namespace SKS_Yonetim_Backend.Controllers
                               try
                               {
                                         var result = _randevuManager.GetAllRandevu();
+                                        return Ok(result);
+                              }
+                              catch (Exception ex)
+                              {
+                                        return BadRequest(ex.Message);
+                              }
+                    }
+
+                    [Authorize]
+                    [HttpPost("CreateOrUpdateRandevuWithCalender")]
+                    public IActionResult CreateOrUpdateRandevuWithCalender(DtoCalender randevu)
+                    {
+                              try
+                              {
+                                        var result = _randevuManager.CreateOrUpdateRandevuWithCalender(randevu);
+                                        return Ok(result);
+                              }
+                              catch (Exception ex)
+                              {
+                                        return BadRequest(ex.Message);
+                              }
+                    }
+
+                    [Authorize]
+                    [HttpPut("UpdateRandevuYeri")]
+                    public IActionResult UpdateRandevuYeri(RandevuYeri randevuYeri)
+                    {
+                              try
+                              {
+                                        var result = _randevuManager.UpdateRandevuYeri(randevuYeri);
+                                        return Ok(result);
+                              }
+                              catch (Exception ex)
+                              {
+                                        return BadRequest(ex.Message);
+                              }
+                    }
+                    [Authorize]
+                    [HttpDelete("DeleteRandevuYeri/{id}")]
+                    public IActionResult DeleteRandevuYeri(int id)
+                    {
+                              try
+                              {
+                                        var result = _randevuManager.DeleteRandevuYeri(id);
+                                        return Ok(result);
+                              }
+                              catch (Exception ex)
+                              {
+                                        return BadRequest(ex.Message);
+                              }
+                    }
+
+                    [Authorize]
+                    [HttpGet("GetRandevuYeriById/{id}")]
+                    public IActionResult GetRandevuYeriById(int id)
+                    {
+                              try
+                              {
+                                        var result = _randevuManager.GetRandevuYeriById(id);
+                                        return Ok(result);
+                              }
+                              catch (Exception ex)
+                              {
+                                        return BadRequest(ex.Message);
+                              }
+                    }
+
+                    [Authorize]
+                    [HttpGet("GetAllRandevuYeri")]
+                    public IActionResult GetAllRandevuYeri()
+                    {
+                              try
+                              {
+                                        var result = _randevuManager.GetAllRandevuYeri();
+                                        return Ok(result);
+                              }
+                              catch (Exception ex)
+                              {
+                                        return BadRequest(ex.Message);
+                              }
+                    }
+
+                    [Authorize]
+                    [HttpPost("CreateRandevuYeri")]
+                    public IActionResult CreateRandevuYeri(RandevuYeri randevuYeri)
+                    {
+                              try
+                              {
+                                        var result = _randevuManager.CreateRandevuYeri(randevuYeri);
                                         return Ok(result);
                               }
                               catch (Exception ex)
