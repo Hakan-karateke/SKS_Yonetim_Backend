@@ -69,7 +69,8 @@ namespace SKS_Yonetim_Backend.Controllers
             }
         }
 
-        [Authorize(Roles = "3")] // Sadece Kullanıcı rolü (3)
+
+        //[Authorize(Roles = "3")] // Sadece Kullanıcı rolü (3)
         [HttpPost("CreateRandevum")]
         public IActionResult CreateRandevum(Randevum randevum)
         {

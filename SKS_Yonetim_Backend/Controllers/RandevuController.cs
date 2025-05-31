@@ -270,5 +270,22 @@ namespace SKS_Yonetim_Backend.Controllers
                                         return BadRequest(ex.Message);
                               }
                     }
+
+                    [Authorize]
+                    [HttpGet("GetRandevuTarihleriByRandevuIdandDate")]
+                    public IActionResult GetRandevuTarihleriByRandevuIdandDate(int randevuId, DateTime date)
+                    {
+                              try
+                              {
+                                        var result = _randevuManager.GetRandevuTarihleriByRandevuIdandDate(randevuId, date);
+                                        return Ok(result);
+                              }
+                              catch (Exception ex)
+                              {
+                                        return BadRequest(ex.Message);
+                              }
+                    }
+
+
           }
 }

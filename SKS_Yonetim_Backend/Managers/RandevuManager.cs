@@ -607,5 +607,35 @@ namespace SKS_Yonetim_Backend.Managers
                 throw new Exception("Randevu bilgileri getirilirken hata oluştu", ex);
             }
         }
+
+        public List<DateTime> GetRandevuTarihleriByRandevuIdandDate(int randevuId, DateTime date)
+        {
+            try
+            {
+                if (_randevu == null)
+                {
+                    throw new Exception("Randevu nesnesi bol olamaz");
+                }
+                if (_randevum == null)
+                {
+                    throw new Exception("Randevum nesnesi boş olamaz.");
+                }
+                List<Randevum> randevumList = [.. _randevum.GetList(r => r.RandevuID == randevuId &&
+                    r.RandevuTarihi.Year == date.Year &&
+                    r.RandevuTarihi.Month == date.Month &&
+                    r.RandevuTarihi.Day == date.Day)];
+                List<DateTime> tarihListesi = [];
+                foreach (var randevum in randevumList)
+                {
+                    // Randevum tarihini ekle
+                    tarihListesi.Add(randevum.RandevuTarihi);
+                }
+                return tarihListesi;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Randevu tarihleri getirilirken hata oluştu", ex);
+            }
+        }
     }
 }

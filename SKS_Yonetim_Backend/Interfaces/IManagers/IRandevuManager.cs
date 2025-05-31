@@ -27,5 +27,6 @@ namespace SKS_Yonetim_Backend.Interfaces.IManagers
         bool DeleteRandevuYeri(int id);
         bool CreateOrUpdateRandevuWithCalender(DtoCalender dtoCalender);
         DtoCalender GetDtoCalenderByRandevuId(int randevuId);
+        List<DateTime> GetRandevuTarihleriByRandevuIdandDate(int randevuId, DateTime date); 
     }
 }
